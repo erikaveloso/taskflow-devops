@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
+    }
+
     stages {
         stage('Install Backend') {
             steps {
@@ -36,7 +40,14 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                echo 'Configure aqui o token e o servidor do SonarQube no Jenkins'
+                sh '''
+                docker run --rm \
+                  --network="taskflow-devops_default" \
+                  -v "$(pwd):/usr/src" \
+                  sonarsource/sonar-scanner-cli \
+                  -Dsonar.host.url="http://taskflow-sonarqube:9000" \
+                  -Dsonar.token="${SONAR_TOKEN}"
+                '''
             }
         }
 

@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from './services/api'
-import './index.css'
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -9,10 +8,9 @@ function App() {
   const [editingId, setEditingId] = useState(null)
   const [loading, setLoading] = useState(false)
 
-  const loadTasks = useCallback(async () => {
+  async function loadTasks() {
     try {
       setLoading(true)
-
       const response = await api.get('/tasks')
       setTasks(response.data)
     } catch (error) {
@@ -21,38 +19,10 @@ function App() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
-    let isMounted = true
-
-    async function fetchTasks() {
-      try {
-        setLoading(true)
-
-        const response = await api.get('/tasks')
-
-        if (isMounted) {
-          setTasks(response.data)
-        }
-      } catch (error) {
-        console.error(error)
-
-        if (isMounted) {
-          alert('Erro ao carregar tarefas')
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false)
-        }
-      }
-    }
-
-    fetchTasks()
-
-    return () => {
-      isMounted = false
-    }
+    loadTasks()
   }, [])
 
   async function handleSubmit(event) {
@@ -70,18 +40,18 @@ function App() {
         await api.put(`/tasks/${editingId}`, {
           title,
           description,
-          completed: currentTask?.completed || false,
+          completed: currentTask?.completed || false
         })
       } else {
         await api.post('/tasks', {
           title,
           description,
-          completed: false,
+          completed: false
         })
       }
 
       resetForm()
-      await loadTasks()
+      loadTasks()
     } catch (error) {
       console.error(error)
       alert('Erro ao salvar tarefa')
@@ -97,7 +67,7 @@ function App() {
   async function handleToggle(id) {
     try {
       await api.patch(`/tasks/${id}/toggle`)
-      await loadTasks()
+      loadTasks()
     } catch (error) {
       console.error(error)
       alert('Erro ao alterar status')
@@ -106,14 +76,11 @@ function App() {
 
   async function handleDelete(id) {
     const confirmed = window.confirm('Deseja excluir esta tarefa?')
-
-    if (!confirmed) {
-      return
-    }
+    if (!confirmed) return
 
     try {
       await api.delete(`/tasks/${id}`)
-      await loadTasks()
+      loadTasks()
     } catch (error) {
       console.error(error)
       alert('Erro ao excluir tarefa')
@@ -130,22 +97,20 @@ function App() {
     <div className="container">
       <div className="card">
         <h1>TaskFlow</h1>
-        <p className="subtitle">
-          Gerencie suas tarefas de forma simples, rápida e eficiente
-        </p>
+        <p className="subtitle">Gerencie suas tarefas de forma simples, rápida e eficiente</p>
 
         <form className="form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Título da tarefa"
             value={title}
-            onChange={(event) => setTitle(event.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
           <textarea
             placeholder="Descrição"
             value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
           />
 
           <div className="actions">

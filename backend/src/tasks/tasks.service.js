@@ -2,8 +2,8 @@ import { HttpException, HttpStatus } from '@nestjs/common'
 import { pool } from '../database'
 
 function validateTaskPayload(payload) {
-  if (!payload || !payload.title || !payload.title.trim()) {
-    throw new HttpException('O título é obrigatório', HttpStatus.BAD_REQUEST);
+  if (!payload?.title?.trim()) {
+    throw new HttpException('O título é obrigatório', HttpStatus.BAD_REQUEST)
   }
 }
 
@@ -14,7 +14,7 @@ export async function findAllTasks() {
     ORDER BY id DESC
   `)
 
-  return result.rows;
+  return result.rows
 }
 
 export async function findTaskById(id) {
@@ -28,14 +28,14 @@ export async function findTaskById(id) {
   )
 
   if (result.rows.length === 0) {
-    throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND);
+    throw new HttpException('Tarefa não encontrada', HttpStatus.NOT_FOUND)
   }
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 export async function createTask(payload) {
-  validateTaskPayload(payload);
+  validateTaskPayload(payload)
 
   const result = await pool.query(
     `
@@ -50,7 +50,7 @@ export async function createTask(payload) {
     ]
   )
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 export async function updateTask(id, payload) {

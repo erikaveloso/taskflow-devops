@@ -1,56 +1,77 @@
 # TaskFlow
 
-Projeto final da disciplina de DevOps.
+Aplicação web simples para gerenciamento de tarefas, desenvolvida como projeto final da disciplina de DevOps.
 
 ---
 
 ## 📌 Descrição
 
-O TaskFlow é uma aplicação web simples para gerenciamento de tarefas, desenvolvida com foco na aplicação de conceitos de DevOps, incluindo organização de repositório, uso de GitFlow e conteinerização com Docker.
+O TaskFlow é uma aplicação full stack com frontend, backend e banco de dados integrados, utilizando Docker Compose para orquestração dos serviços e pipeline automatizada com GitHub Actions e SonarCloud.
+
+O projeto foi desenvolvido com foco na aplicação prática de conceitos de DevOps, integração contínua e organização de fluxo de desenvolvimento.
 
 ---
 
 ## 🎯 Objetivo
 
-Estruturar uma aplicação com:
+Demonstrar na prática:
 
-* Frontend
-* Backend
-* Banco de dados
-* Execução via Docker Compose
+- Integração entre frontend, backend e banco de dados
+- Conteinerização da aplicação
+- Pipeline de integração contínua
+- Análise de qualidade de código
+- Fluxo de branches utilizando GitFlow
+- Commits semânticos e organização do repositório
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-* React (Frontend)
-* NestJS com JavaScript (Backend)
-* PostgreSQL (Banco de dados)
-* Docker
-* Docker Compose
-* GitHub
-* GitFlow
+### Frontend
+- React
+- Vite
+- Axios
+
+### Backend
+- NestJS com JavaScript
+- Babel
+
+### Banco de Dados
+- PostgreSQL
+
+### DevOps
+- Docker
+- Docker Compose
+- GitHub Actions
+- SonarCloud
+- GitFlow
 
 ---
 
 ## 📂 Estrutura do projeto
 
-```
+```bash
 taskflow-devops/
 ├── backend/
 │   ├── src/
+│   ├── tests/
 │   ├── package.json
 │   ├── Dockerfile
 │   └── babel.config.json
 │
 ├── frontend/
 │   ├── src/
-│   ├── index.html
 │   ├── package.json
-│   └── Dockerfile
+│   ├── Dockerfile
+│   └── vite.config.js
 │
-├── compose.yaml
-├── .gitignore
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
+├── docker-compose.yml
+├── sonar-project.properties
+├── package.json
 └── README.md
 ```
 
@@ -64,7 +85,7 @@ taskflow-devops/
 git clone https://github.com/erikaveloso/taskflow-devops.git
 ```
 
-### 2. Entrar na pasta
+### 2. Entrar na pasta do projeto
 
 ```bash
 cd taskflow-devops
@@ -73,79 +94,110 @@ cd taskflow-devops
 ### 3. Subir os containers
 
 ```bash
-docker compose -f compose.yaml up --build
+docker compose up --build
 ```
 
 ---
 
 ## 🌐 Acesso à aplicação
 
-Após subir os containers, acesse:
+Após subir os containers:
 
-* Frontend: http://localhost:3000
-* Backend: http://localhost:8080
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
 
 ---
 
 ## 🐳 Serviços configurados
 
-O projeto utiliza Docker Compose para subir:
+O Docker Compose realiza a execução integrada dos seguintes serviços:
 
-* **Frontend** (React)
-* **Backend** (NestJS)
-* **Banco de dados** (PostgreSQL)
+- Frontend React
+- Backend NestJS
+- Banco PostgreSQL
 
 ---
 
-## 🌿 Estratégia de versionamento (GitFlow)
+## ⚙️ Pipeline CI/CD
+
+O projeto possui integração contínua utilizando GitHub Actions.
+
+A pipeline executa automaticamente:
+
+- Instalação das dependências
+- Build do frontend
+- Build do backend
+- Execução dos testes
+- Análise de qualidade com SonarCloud
+
+---
+
+## 🔍 Qualidade de código
+
+A análise estática do projeto é realizada utilizando SonarCloud.
+
+A integração verifica:
+- Bugs
+- Vulnerabilidades
+- Code Smells
+- Qualidade geral do código
+
+---
+
+## 🌿 Estratégia de versionamento
 
 ### Branches principais
 
-* `main` → versão final do projeto
-* `develop` → base de desenvolvimento
+- `main` → versão final da aplicação
+- `develop` → branch de desenvolvimento
 
-### Branches de features
+### Branches auxiliares
 
-* `feature/project-structure`
-* `feature/backend-structure`
-* `feature/frontend-structure`
-* `feature/docker-compose`
+- `feature/*`
+- `fix/*`
+- `chore/*`
 
 ---
 
 ## 🔄 Fluxo de trabalho
 
-1. Criar branch a partir da develop:
+### Criar branch
 
 ```bash
 git checkout develop
 git checkout -b feature/nome-da-feature
 ```
 
-2. Fazer alterações e commit:
+### Realizar commit
 
 ```bash
 git add .
-git commit -m "mensagem"
+git commit -m "feat: descrição da funcionalidade"
 ```
 
-3. Enviar para o GitHub:
+### Enviar alterações
 
 ```bash
 git push origin feature/nome-da-feature
 ```
 
-4. Criar Pull Request:
+### Abrir Pull Request
 
-```
+```text
 feature → develop
 ```
 
 ---
 
-## 📌 Observações
+## 📌 Funcionalidades implementadas
 
-* A branch `main` será utilizada apenas na entrega final
-* O foco da Etapa 1 é a estrutura do projeto e o funcionamento do Docker Compose
+- Cadastro de tarefas
+- Listagem de tarefas
+- Atualização de tarefas
+- Remoção de tarefas
 
 ---
+
+## 👥 Equipe
+
+Projeto desenvolvido para fins acadêmicos na disciplina de DevOps.

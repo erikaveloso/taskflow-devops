@@ -5,7 +5,7 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
 
-  setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setup.js'],
 
   collectCoverage: true,
 

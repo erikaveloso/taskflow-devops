@@ -4,7 +4,7 @@ module.exports = {
     ['@babel/preset-react', { runtime: 'automatic' }]
   ],
 
- plugins: [
+  plugins: [
     ['@babel/plugin-proposal-decorators', { legacy: true }]
   ]
 }

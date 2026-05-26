@@ -17,7 +17,8 @@
   "scripts": {
     "test": "jest --config backend/jest.config.js",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

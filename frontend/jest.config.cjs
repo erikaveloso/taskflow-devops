@@ -11,15 +11,5 @@ module.exports = {
 
   coverageDirectory: 'coverage',
 
-  coverageReporters: [
-    'text',
-    'lcov',
-  ],
-
-  testMatch: [
-    '**/*.spec.js',
-    '**/*.spec.jsx',
-    '**/*.test.js',
-    '**/*.test.jsx',
-  ],
+  coverageReporters: ['text', 'lcov'],
 }

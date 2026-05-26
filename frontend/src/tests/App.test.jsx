@@ -1,33 +1,34 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import '@testing-library/jest-dom'
 
 import App from '../App'
 import api from '../services/api'
 
-vi.mock('../services/api', () => ({
+jest.mock('../services/api', () => ({
+  __esModule: true,
   default: {
-    get: vi.fn(),
-    post: vi.fn(),
-    put: vi.fn(),
-    patch: vi.fn(),
-    delete: vi.fn(),
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    patch: jest.fn(),
+    delete: jest.fn(),
   },
 }))
 
 describe('App', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
 
-    window.alert = vi.fn()
-    window.confirm = vi.fn()
+    jest.spyOn(console, 'error').mockImplementation(() => { })
 
-    vi.mocked(api.get).mockResolvedValue({
+    window.alert = jest.fn()
+    window.confirm = jest.fn()
+
+    api.get.mockResolvedValue({
       data: [],
     })
   })
-
   it('renderiza a tela inicial de tarefas', async () => {
     render(<App />)
 
@@ -47,7 +48,7 @@ describe('App', () => {
   })
 
   it('renderiza tarefas vindas da api', async () => {
-    vi.mocked(api.get).mockResolvedValueOnce({
+    api.get.mockResolvedValueOnce({
       data: [
         {
           id: 1,
@@ -74,8 +75,8 @@ describe('App', () => {
   })
 
   it('cria uma nova tarefa', async () => {
-    vi.mocked(api.post).mockResolvedValueOnce({})
-    vi.mocked(api.get).mockResolvedValue({
+    api.post.mockResolvedValueOnce({})
+    api.get.mockResolvedValue({
       data: [],
     })
 
@@ -123,7 +124,7 @@ describe('App', () => {
   })
 
   it('conclui uma tarefa', async () => {
-    vi.mocked(api.get).mockResolvedValueOnce({
+    api.get.mockResolvedValueOnce({
       data: [
         {
           id: 1,
@@ -134,7 +135,7 @@ describe('App', () => {
       ],
     })
 
-    vi.mocked(api.patch).mockResolvedValueOnce({})
+    api.patch.mockResolvedValueOnce({})
 
     render(<App />)
 
@@ -150,9 +151,9 @@ describe('App', () => {
   })
 
   it('remove uma tarefa', async () => {
-    window.confirm = vi.fn(() => true)
+    window.confirm = jest.fn(() => true)
 
-    vi.mocked(api.get).mockResolvedValueOnce({
+    api.get.mockResolvedValueOnce({
       data: [
         {
           id: 1,
@@ -163,7 +164,7 @@ describe('App', () => {
       ],
     })
 
-    vi.mocked(api.delete).mockResolvedValueOnce({})
+    api.delete.mockResolvedValueOnce({})
 
     render(<App />)
 
@@ -179,7 +180,7 @@ describe('App', () => {
   })
 
   it('entra em modo edição ao clicar em editar', async () => {
-    vi.mocked(api.get).mockResolvedValueOnce({
+    api.get.mockResolvedValueOnce({
       data: [
         {
           id: 1,
@@ -214,7 +215,7 @@ describe('App', () => {
   })
 
   it('atualiza uma tarefa', async () => {
-    vi.mocked(api.get).mockResolvedValueOnce({
+    api.get.mockResolvedValueOnce({
       data: [
         {
           id: 1,
@@ -225,7 +226,7 @@ describe('App', () => {
       ],
     })
 
-    vi.mocked(api.put).mockResolvedValueOnce({})
+    api.put.mockResolvedValueOnce({})
 
     render(<App />)
 
@@ -259,8 +260,8 @@ describe('App', () => {
   })
 
   it('exibe loading ao carregar tarefas', () => {
-    vi.mocked(api.get).mockImplementation(
-      () => new Promise(() => {}),
+    api.get.mockImplementation(
+      () => new Promise(() => { }),
     )
 
     render(<App />)
@@ -271,7 +272,7 @@ describe('App', () => {
   })
 
   it('exibe alerta ao falhar carregamento', async () => {
-    vi.mocked(api.get).mockRejectedValueOnce(
+    api.get.mockRejectedValueOnce(
       new Error('Erro API'),
     )
 

@@ -2,9 +2,11 @@ import { HttpException, HttpStatus } from '@nestjs/common'
 import {
   findAllTasks,
   findTaskById,
-  createTask
+  createTask,
+  updateTask,
+  toggleTask,
+  deleteTask
 } from '../src/tasks/tasks.service'
-
 import { pool } from '../src/database'
 
 jest.mock('../src/database', () => ({
@@ -190,6 +192,102 @@ describe('Tasks Service', () => {
           'O título é obrigatório',
           HttpStatus.BAD_REQUEST
         )
+      )
+    })
+  })
+
+  describe('updateTask', () => {
+    it('deve atualizar uma tarefa', async () => {
+      pool.query
+        .mockResolvedValueOnce({
+          rows: [{ id: 1 }]
+        })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              id: 1,
+              title: 'Atualizada',
+              description: 'Nova descrição',
+              completed: true,
+            },
+          ],
+        })
+
+      const result = await updateTask(1, {
+        title: 'Atualizada',
+        description: 'Nova descrição',
+        completed: true,
+      })
+
+      expect(result.title).toBe('Atualizada')
+      expect(result.completed).toBe(true)
+    })
+
+    it('deve lançar erro ao atualizar tarefa inexistente', async () => {
+      pool.query.mockResolvedValue({
+        rows: [],
+      })
+
+      await expect(
+        updateTask(999, {
+          title: 'Teste',
+        }),
+      ).rejects.toThrow(
+        'Tarefa não encontrada',
+      )
+    })
+  })
+
+  describe('toggleTask', () => {
+    it('deve alternar completed da tarefa', async () => {
+      pool.query.mockResolvedValue({
+        rows: [
+          {
+            id: 1,
+            completed: true,
+          },
+        ],
+      })
+
+      const result = await toggleTask(1)
+
+      expect(result.completed).toBe(true)
+    })
+
+    it('deve lançar erro ao alternar tarefa inexistente', async () => {
+      pool.query.mockResolvedValue({
+        rows: [],
+      })
+
+      await expect(
+        toggleTask(999),
+      ).rejects.toThrow(
+        'Tarefa não encontrada',
+      )
+    })
+  })
+  describe('deleteTask', () => {
+    it('deve remover tarefa', async () => {
+      pool.query.mockResolvedValue({
+        rows: [{ id: 1 }],
+      })
+
+      const result = await deleteTask(1)
+
+      expect(result).toEqual({
+        message: 'Tarefa removida com sucesso',
+      })
+    })
+
+    it('deve lançar erro ao remover tarefa inexistente', async () => {
+      pool.query.mockResolvedValue({
+        rows: [],
+      })
+
+      await expect(
+        deleteTask(999),
+      ).rejects.toThrow(
+        'Tarefa não encontrada',
       )
     })
   })

@@ -52,19 +52,29 @@ jobs:
       - name: Run backend tests
         run: |
           cd backend
-          npm test -- --coverage
-      
+          npm test
+
       - name: Run frontend tests
         run: |
           cd frontend
-          npm test -- --coverage
-          
+          npm test
+  
       - name: Run frontend lint
         run: |
           cd frontend
           npm run lint
-          
+
+      - name: Build backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

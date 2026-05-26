@@ -22,8 +22,8 @@ describe('App', () => {
 
     jest.spyOn(console, 'error').mockImplementation(() => { })
 
-    window.alert = jest.fn()
-    window.confirm = jest.fn()
+    globalThis.alert = jest.fn()
+    globalThis.confirm = jest.fn()
 
     api.get.mockResolvedValue({
       data: [],
@@ -116,7 +116,7 @@ describe('App', () => {
       }),
     )
 
-    expect(window.alert).toHaveBeenCalledWith(
+    expect(globalThis.alert).toHaveBeenCalledWith(
       'Informe o título da tarefa',
     )
 
@@ -151,7 +151,7 @@ describe('App', () => {
   })
 
   it('remove uma tarefa', async () => {
-    window.confirm = jest.fn(() => true)
+    globalThis.confirm = jest.fn(() => true)
 
     api.get.mockResolvedValueOnce({
       data: [
@@ -279,7 +279,7 @@ describe('App', () => {
     render(<App />)
 
     await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith(
+      expect(globalThis.alert).toHaveBeenCalledWith(
         'Erro ao carregar tarefas',
       )
     })

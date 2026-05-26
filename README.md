@@ -201,3 +201,4 @@ feature → develop
 ## 👥 Equipe
 
 Projeto desenvolvido para fins acadêmicos na disciplina de DevOps.
+Desenvolvedoras: Érika Veloso, Júlia Matos e Richelle Monteiro
